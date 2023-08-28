@@ -7,13 +7,13 @@ from django.db import models
 # Register your models here.
 class UserAdminConfig(UserAdmin):
     model = Account
-    search_fields = ('email', 'user_name',)
-    list_filter = ('email', 'user_name', 'is_active', 'is_staff',)
+    search_fields = ('email', 'username',)
+    list_filter = ('email', 'username', 'is_active', 'is_staff',)
     ordering = ('-date_created',)
-    list_display = ('email', 'user_name', 'is_active', 'is_staff',)
+    list_display = ('email', 'username', 'is_active', 'is_staff',)
 
     fieldsets = (
-        (None, {'fields': ('email', 'user_name',)}),
+        (None, {'fields': ('email', 'username',)}),
         ('Permissions', {'fields': ('is_active', 'is_staff')}),
     )
 
@@ -24,7 +24,7 @@ class UserAdminConfig(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'user_name', 'password1', 'password2', 'is_active', 'is_staff',)
+            'fields': ('email', 'username', 'password1', 'password2', 'is_active', 'is_staff',)
         }),
     )
 
