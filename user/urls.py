@@ -1,9 +1,7 @@
-from rest_framework import routers
 from django.urls import path
 
 from .views import LoginViewSet
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 
