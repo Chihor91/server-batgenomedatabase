@@ -11,5 +11,6 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = [
             "email",
             "username",
-            "password"
+            "password",
+            "is_superuser"
         ]

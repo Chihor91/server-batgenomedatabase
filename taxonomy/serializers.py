@@ -11,48 +11,44 @@ from .models import (
     )
                 
 class SpeciesSerializer(serializers.ModelSerializer):
-    parent = serializers.CharField(source='parent.name', read_only=True)
     class Meta:
         model = Species
         fields = '__all__'
 
 class GenusSerializer(serializers.ModelSerializer):
-    parent = serializers.CharField(source='parent.name', read_only=True)
-    species = SpeciesSerializer(many=True)
+    species = SpeciesSerializer(many=True, required=False)
     class Meta:
         model = Genus
         fields = '__all__'
 
 class FamilySerializer(serializers.ModelSerializer):
-    parent = serializers.CharField(source='parent.name', read_only=True)
-    genera = GenusSerializer(many=True)
+    genera = GenusSerializer(many=True, required=False)
     class Meta:
         model = Family
         fields = '__all__'
 
 class OrderSerializer(serializers.ModelSerializer):
-    parent = serializers.CharField(source='parent.name', read_only=True)
-    families = FamilySerializer(many=True)
+    families = FamilySerializer(many=True, required=False)
     class Meta:
         model = Order
         fields = '__all__'
 
 class ClassSerializer(serializers.ModelSerializer):
-    parent = serializers.CharField(source='parent.name', read_only=True)
-    orders = OrderSerializer(many=True)
+    orders = OrderSerializer(many=True, required=False)
     class Meta:
         model = Class
         fields = '__all__'
 
 class PhylumSerializer(serializers.ModelSerializer):
-    parent = serializers.CharField(source='parent.name', read_only=True)
-    classes = ClassSerializer(many=True)
+    parent_name = serializers.CharField(source="parent.name", read_only=True, required=False)
+    classes = ClassSerializer(many=True, required=False)
     class Meta:
         model = Phylum
         fields = '__all__'
 
 class DomainSerializer(serializers.ModelSerializer):
-    phyla = PhylumSerializer(many=True)
+    
+    phyla = PhylumSerializer(many=True, required=False)
     class Meta:
         model = Domain
         fields = '__all__'
