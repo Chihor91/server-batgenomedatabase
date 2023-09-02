@@ -6,7 +6,8 @@ from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from rest_framework.permissions import AllowAny
 
 from .serializers import (
-    DomainSerializer, 
+    DomainSerializer,
+    KingdomSerializer,
     PhylumSerializer, 
     ClassSerializer, 
     OrderSerializer, 
@@ -16,6 +17,7 @@ from .serializers import (
     )
 from .models import (
     Domain,
+    Kingdom,
     Phylum,
     Class,
     Order,
@@ -27,10 +29,13 @@ from .models import (
 
 class DomainViewSet(viewsets.ModelViewSet):
     queryset = Domain.objects.all()
-    permission_classes = [AllowAny]
 
     serializer_class = DomainSerializer
-    parser_classes = [JSONParser, MultiPartParser, FormParser]
+
+class KingdomViewSet(viewsets.ModelViewSet):
+    queryset = Kingdom.objects.all()
+
+    serializer_class = KingdomSerializer
 
 class PhylumViewSet(viewsets.ModelViewSet):
     queryset = Phylum.objects.all()

@@ -9,13 +9,23 @@ class Domain(models.Model):
 
     def __str__(self):
         return self.name
+
+class Kingdom(models.Model):
+    class Meta:
+        verbose_name_plural = "Kingdoms"
+
+    name = models.CharField(max_length=200)
+    parent = models.ForeignKey(Domain, related_name='kingdoms',  on_delete=models.CASCADE)
     
+    def __str__(self):
+        return self.name 
+
 class Phylum(models.Model):
     class Meta:
         verbose_name_plural = "Phyla"
 
     name = models.CharField(max_length=200)
-    parent = models.ForeignKey(Domain, related_name='phyla',  on_delete=models.CASCADE)
+    parent = models.ForeignKey(Kingdom, related_name='phyla',  on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name

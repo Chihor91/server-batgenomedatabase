@@ -1,7 +1,8 @@
 from rest_framework import routers
 from django.urls import path
 from .views import (
-    DomainViewSet, 
+    DomainViewSet,
+    KingdomViewSet, 
     PhylumViewSet,
     ClassViewSet,
     OrderViewSet,
@@ -13,6 +14,7 @@ from .views import (
 tax_router = routers.DefaultRouter()
 
 tax_router.register('domain', DomainViewSet)
+tax_router.register('kingdom', KingdomViewSet)
 tax_router.register('phylum', PhylumViewSet)
 tax_router.register('class', ClassViewSet)
 tax_router.register('order', OrderViewSet)

@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from .models import (
-    Domain, 
+    Domain,
+    Kingdom,
     Phylum, 
     Class, 
     Order, 
@@ -46,9 +47,16 @@ class PhylumSerializer(serializers.ModelSerializer):
         model = Phylum
         fields = '__all__'
 
+class KingdomSerializer(serializers.ModelSerializer):
+    parent_name = serializers.CharField(source="parent.name", read_only=True, required=False)
+    phyla = PhylumSerializer(many=True, required=False)
+    class Meta:
+        model = Kingdom
+        fields = '__all__'
+
 class DomainSerializer(serializers.ModelSerializer):
     
-    phyla = PhylumSerializer(many=True, required=False)
+    Kingdoms = KingdomSerializer(many=True, required=False)
     class Meta:
         model = Domain
         fields = '__all__'
