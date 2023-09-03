@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import (
+    Taxonomy,
     Domain,
     Kingdom,
     Phylum, 
@@ -10,6 +11,11 @@ from .models import (
     Genus, 
     Species
     )
+
+class TaxonomySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Taxonomy
+        fields = "__all__"
                 
 class SpeciesSerializer(serializers.ModelSerializer):
     class Meta:

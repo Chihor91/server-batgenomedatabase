@@ -1,7 +1,7 @@
 from django.contrib import admin
 from . import models
 
-
+admin.site.register(models.Taxonomy)
 admin.site.register(models.Domain)
 admin.site.register(models.Phylum)
 admin.site.register(models.Class)

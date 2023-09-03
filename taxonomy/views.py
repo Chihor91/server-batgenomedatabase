@@ -6,6 +6,7 @@ from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from rest_framework.permissions import AllowAny
 
 from .serializers import (
+    TaxonomySerializer,
     DomainSerializer,
     KingdomSerializer,
     PhylumSerializer, 
@@ -16,6 +17,7 @@ from .serializers import (
     SpeciesSerializer,
     )
 from .models import (
+    Taxonomy,
     Domain,
     Kingdom,
     Phylum,
@@ -26,6 +28,11 @@ from .models import (
     Species,
 )
 # Create your views here.
+
+class TaxonomyViewSet(viewsets.ModelViewSet):
+    queryset = Taxonomy.objects.all()
+
+    serializer_class = TaxonomySerializer
 
 class DomainViewSet(viewsets.ModelViewSet):
     queryset = Domain.objects.all()
