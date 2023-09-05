@@ -124,7 +124,7 @@ SIMPLE_JWT={
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+local_machine = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'batgenome',
@@ -134,6 +134,19 @@ DATABASES = {
         'PASSWORD': 'popowhee123'
     }
 }
+
+local_docker = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'batgenome',
+        'HOST': 'host.docker.internal',
+        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': 'popowhee123'
+    }
+}
+
+DATABASES = local_docker
 
 
 # Password validation
