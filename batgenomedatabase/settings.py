@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'user',
     'taxonomy',
     'isolate',
+    'host',
 ]
 
 MIDDLEWARE = [
