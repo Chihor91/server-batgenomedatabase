@@ -1,6 +1,24 @@
 from django.db import models
 
 # Create your models here.
+class Taxonomy(models.Model):
+    class Meta:
+        verbose_name_plural = "Taxonomies"
+
+    tax_domain = models.CharField(max_length=200)
+    tax_kingdom = models.CharField(max_length=200)
+    tax_phylum = models.CharField(max_length=200)
+    tax_class = models.CharField(max_length=200)
+    tax_order = models.CharField(max_length=200)
+    tax_family = models.CharField(max_length=200)
+    tax_genus = models.CharField(max_length=200)
+    tax_species = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.tax_species
+
+
+
 class Domain(models.Model):
     class Meta:
         verbose_name_plural = "Domain"
