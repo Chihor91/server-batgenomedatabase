@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class StrainConfig(AppConfig):
+class IsolateConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'strain'
+    name = 'isolate'

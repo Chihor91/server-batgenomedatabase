@@ -63,7 +63,7 @@ INSTALLED_APPS = [
 
     'user',
     'taxonomy',
-    'strain',
+    'isolate',
 ]
 
 MIDDLEWARE = [
