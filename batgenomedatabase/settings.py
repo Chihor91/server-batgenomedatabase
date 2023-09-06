@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 
     'user',
     'taxonomy',
+    'strain',
 ]
 
 MIDDLEWARE = [
@@ -129,7 +130,7 @@ local_machine = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'batgenome',
         'HOST': '127.0.0.1',
-        'PORT': '3307',
+        'PORT': '3306',
         'USER': 'root',
         'PASSWORD': 'popowhee123'
     }
@@ -146,7 +147,7 @@ local_docker = {
     }
 }
 
-DATABASES = local_docker
+DATABASES = local_machine
 
 
 # Password validation
