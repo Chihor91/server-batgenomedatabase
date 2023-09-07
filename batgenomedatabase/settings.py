@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     'taxonomy',
     'isolate',
     'host',
-    'source'
+    'source',
+    'location'
 ]
 
 MIDDLEWARE = [
