@@ -63,7 +63,6 @@ INSTALLED_APPS = [
 
     'user',
     'taxonomy',
-    'isolate',
     'host',
     'source',
     'location'
