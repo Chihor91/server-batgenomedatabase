@@ -3,26 +3,31 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 class Location(models.Model):
-    location_abbr = models.CharField(max_length=50)
-    location_province = models.CharField(max_length=255)
-    location_town = models.CharField(max_length=255)
-    location_long = models.FloatField(validators=[MinValueValidator(-180), MaxValueValidator(180)])
-    location_lat = models.FloatField(validators=[MinValueValidator(-90), MaxValueValidator(90)])
+    abbr = models.CharField(max_length=25)
+    province = models.CharField(max_length=50)
+    town = models.CharField(max_length=50)
+    long = models.FloatField(validators=[MinValueValidator(-180), MaxValueValidator(180)])
+    lat = models.FloatField(validators=[MinValueValidator(-90), MaxValueValidator(90)])
 
     def __str__(self):
-        return self.location_abbr
+        return self.abbr
 
-class SamplingSite(models.Model):
-    site_abbr = models.CharField(max_length=50)
-    site_name = models.CharField(max_length=255)
-    location = models.ForeignKey(Location, related_name='sites', on_delete=models.CASCADE)
+class Cave(models.Model):
+    abbr = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    location = models.ForeignKey(Location, related_name='caves', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.site_abbr
+        return self.abbr
     
 class SamplingPoint(models.Model):
-    point_number = models.AutoField(primary_key=True)
-    sampling_site = models.ForeignKey(SamplingSite, related_name='points', on_delete=models.CASCADE)
+    point_number = models.IntegerField(blank=True, default=0)
+    cave = models.ForeignKey(Cave, related_name='points', on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        self.point_number = self.cave.points.count()
+        super(SamplingPoint, self).save(*args, **kwargs)
+        
 
     def __str__(self):
-        return self.point_number
+        return str(self.point_number)
