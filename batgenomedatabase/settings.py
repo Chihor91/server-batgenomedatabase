@@ -62,7 +62,6 @@ INSTALLED_APPS = [
     'django_filters',
 
     'user',
-    'host',
     'source',
     'location'
 ]
