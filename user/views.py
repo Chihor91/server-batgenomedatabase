@@ -1,20 +1,19 @@
 from .models import Account
 from .serializers import AccountSerializer
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
-class IsAuthenticated(BasePermission):
-    def has_permission(self, request, view):
-        return request.user.is_authenticated
+class AccountViewSet(viewsets.ModelViewSet):
+    # permission_classes = [IsAdminUser]
+    queryset = Account.objects.all()
     
-class IsSuperUser(BasePermission):
-    def has_permission(self, request, view):
-        return bool(request.user and request.user.is_superuser)
+    serializer_class = AccountSerializer
 
 class LoginViewSet(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -37,7 +36,7 @@ class IsLoggedIn(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class IsAdmin(APIView):
-    permission_classes = [IsSuperUser]
+    permission_classes = [IsAdminUser]
 
     def get(self, request, format=None):
         return Response(status=status.HTTP_200_OK)
