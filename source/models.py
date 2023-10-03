@@ -4,8 +4,8 @@ from location.models import SamplingPoint
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=50)
-    abbr = models.CharField(max_length=25)
+    name = models.CharField(max_length=50, unique=True)
+    abbr = models.CharField(max_length=25, unique=True)
 
     def __str__(self):
         return self.abbr
