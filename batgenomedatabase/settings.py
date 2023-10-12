@@ -147,7 +147,18 @@ local_docker = {
     }
 }
 
-DATABASES = local_machine
+prod_docker = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'batgenome',
+        'USER': 'root',
+        'PASSWORD': 'uplbserv1234',
+        'HOST': '0.0.0.0',
+        'PORT': '3306',
+    }
+}
+
+DATABASES = prod_docker
 
 
 # Password validation
