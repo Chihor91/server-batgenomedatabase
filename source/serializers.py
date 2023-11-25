@@ -2,8 +2,7 @@ from rest_framework import serializers
 
 from .models import (
     Source,
-    Isolate,
-    Project
+    Strain
 )
 
 class SourceSerializer(serializers.ModelSerializer):
@@ -11,12 +10,7 @@ class SourceSerializer(serializers.ModelSerializer):
         model = Source
         fields = "__all__"
 
-class IsolateSerializer(serializers.ModelSerializer):
+class StrainSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Isolate
-        fields = "__all__"
-
-class ProjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
+        model = Strain
         fields = "__all__"
