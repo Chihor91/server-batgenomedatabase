@@ -22,6 +22,6 @@ class SourceViewSet(viewsets.ModelViewSet):
 class StrainViewSet(viewsets.ModelViewSet):
     queryset = Strain.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['source']
+    filterset_fields = ['id','source']
 
     serializer_class = StrainSerializer
