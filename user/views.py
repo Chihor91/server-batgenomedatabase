@@ -5,15 +5,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-
-class AccountViewSet(viewsets.ModelViewSet):
-    # permission_classes = [IsAdminUser]
-    queryset = Account.objects.all()
-    
-    serializer_class = AccountSerializer
 
 class LoginViewSet(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -40,4 +33,44 @@ class IsAdmin(APIView):
 
     def get(self, request, format=None):
         return Response(status=status.HTTP_200_OK)
+    
+class AccountViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+    
+    def create(self, request):
+        try:
+            if request.user.is_superuser:
+                data = request.data
+
+                email = data['email']
+                username = data['username']
+                password = data['password']
+
+                if Account.objects.filter(email = email).exists():
+                    return Response(
+                        {'error': 'Account with this email already exists.'},
+                        status = status.HTTP_400_BAD_REQUEST
+                    )
+                elif Account.objects.filter(username = username).exists():
+                    return Response(
+                        {'error': 'Account with this username already exists.'},
+                        status = status.HTTP_400_BAD_REQUEST
+                    )
+                else:
+                    Account.objects.create_user(email = email, username = username, password = password)
+                    return Response(
+                        {'data': 'Account created successfully'},
+                        status = status.HTTP_201_CREATED
+                    )
+            else:
+                return Response(
+                    {'error': 'Unauthorized'},
+                    status = status.HTTP_401_UNAUTHORIZED
+                )
+        except Exception as e:
+            return Response(
+                {'error': 'Something went wrong while creating user.'},
+                status = status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 

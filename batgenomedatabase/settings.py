@@ -158,7 +158,7 @@ prod_docker = {
     }
 }
 
-DATABASES = prod_docker
+DATABASES = local_machine
 
 
 # Password validation

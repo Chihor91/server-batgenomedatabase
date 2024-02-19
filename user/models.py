@@ -6,14 +6,8 @@ import os
 # Create your models here.
 class AccountManager(BaseUserManager):
     def create_superuser(self, email, username, password, **other_fields):
-        other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
-        other_fields.setdefault('is_active', True)
 
-        if other_fields.get('is_staff') is not True:
-            raise ValueError(
-                'Superuser must be staff=True'
-            )
         if other_fields.get('is_superuser') is not True:
             raise ValueError(
                 'Superuser must be superuser=True.'
@@ -36,8 +30,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(('email address'), unique=True)
     username = models.CharField(max_length=150, unique=True)
     date_created = models.DateTimeField(default=timezone.now)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
 
     objects = AccountManager()
 
