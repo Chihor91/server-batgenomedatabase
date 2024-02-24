@@ -31,10 +31,15 @@ class Account(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True)
     date_created = models.DateTimeField(default=timezone.now)
 
+    @property
+    def is_staff(self):
+        return self.is_superuser
+
     objects = AccountManager()
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
+
 
     def __str__(self):
         return self.username
