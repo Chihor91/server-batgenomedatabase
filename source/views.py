@@ -20,6 +20,15 @@ class SourceViewSet(viewsets.ModelViewSet):
 
     serializer_class = SourceSerializer
 
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except:
+            return Response(
+                {'message': 'An error has occurred while creating source.'},
+                status = status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 class StrainViewSet(viewsets.ModelViewSet):
     queryset = Strain.objects.all()
     filter_backends = [DjangoFilterBackend]
