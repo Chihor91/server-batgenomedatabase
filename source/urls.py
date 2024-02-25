@@ -8,6 +8,6 @@ from .views import (
 router = DefaultRouter()
 
 router.register('source', SourceViewSet)
-router.register('strain', StrainViewSet)
+router.register('isolate', StrainViewSet)
 
 urlpatterns = router.urls
