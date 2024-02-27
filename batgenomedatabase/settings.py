@@ -63,7 +63,6 @@ INSTALLED_APPS = [
 
     'user',
     'source',
-    'location'
 ]
 
 MIDDLEWARE = [

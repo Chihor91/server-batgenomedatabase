@@ -1,12 +1,9 @@
 from django.db import models
-from location.models import SamplingPoint
 # Create your models here.
 
 class Source(models.Model):
     collection = models.CharField(max_length=25)
     institution = models.CharField(max_length=50)
-    
-
     
     host_type = models.CharField(max_length=25, blank=True) 
     host_species = models.CharField(max_length=50, blank=True)
@@ -15,17 +12,20 @@ class Source(models.Model):
     project_name = models.CharField(max_length=50)
     project_abbr = models.CharField(max_length=25)
 
+
+    loc_location = models.CharField(max_length=50)
+    loc_abbr = models.CharField(max_length=25)
+    loc_sampling_site = models.CharField(max_length=50)
+    loc_site_abbr = models.CharField(max_length=25)
+    loc_sampling_point = models.IntegerField(default=0)
+
     human_readable_id = models.CharField(max_length=150, blank=True)
-
-    #project = models.ForeignKey(Project, related_name='sources', on_delete=models.CASCADE, blank=True)
-    sampling_point = models.ForeignKey(SamplingPoint, related_name='sources', on_delete=models.SET_NULL, null=True)
-
 
     def save(self, *args, **kwargs):
         if (self.host_type == ""):
-            self.human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.sampling_point.cave.location.abbr, self.sampling_point.cave.abbr, str(self.sampling_point.point_number), self.sample_type])
+            self.human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.loc_abbr, self.loc_site_abbr, str(self.loc_sampling_point), self.sample_type])
         else: 
-            self.human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.sampling_point.cave.location.abbr, self.sampling_point.cave.abbr, str(self.sampling_point.point_number), self.host_type, self.sample_type])
+            self.human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.loc_abbr, self.loc_site_abbr, str(self.loc_sampling_point), self.host_type, self.sample_type])
         super(Source, self).save(*args, **kwargs)
 
     def __str__(self):
