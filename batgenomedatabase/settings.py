@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 
     'user',
     'source',
+    'bacdiveapi',
 ]
 
 MIDDLEWARE = [
