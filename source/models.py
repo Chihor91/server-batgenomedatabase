@@ -38,6 +38,15 @@ class Strain(models.Model):
     type = models.IntegerField()    # 1 - Bacteria, 2 = Yeast, 3 = Mold
     type_id = models.IntegerField(blank=True)
 
+    # BACDIVE FIELDS
+    description = models.CharField(max_length=1000, blank=True)
+    
+    taxonomy = models.JSONField(blank=True, default=dict)
+    morphology = models.JSONField(blank=True, default=dict)
+    culture_growth = models.JSONField(blank=True, default=dict)
+    physiology_metabolism = models.JSONField(blank=True, default=dict)
+    safety_information = models.JSONField(blank=True, default=dict)
+    sequence_information = models.JSONField(blank=True, default=dict)
 
     def save(self, *args, **kwargs):
         if not self.type_id:
