@@ -1,8 +1,8 @@
 from django.contrib import admin
 from .models import (
     Source,
-    Strain,
+    Isolate,
 )
 # Register your models here.
 admin.site.register(Source)
-admin.site.register(Strain)
+admin.site.register(Isolate)

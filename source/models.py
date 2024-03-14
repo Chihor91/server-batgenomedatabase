@@ -1,4 +1,5 @@
 from django.db import models
+from user.models import Account
 # Create your models here.
 
 class Source(models.Model):
@@ -31,8 +32,8 @@ class Source(models.Model):
     def __str__(self):
         return self.human_readable_id
     
-class Strain(models.Model):
-    source = models.ForeignKey(Source, related_name='strains', on_delete=models.CASCADE)
+class Isolate(models.Model):
+    source = models.ForeignKey(Source, related_name='isolates', on_delete=models.CASCADE)
     human_readable_id = models.CharField(max_length=150, blank=True)
     accession_no = models.CharField(max_length=100, blank=True)
     type = models.IntegerField()    # 1 - Bacteria, 2 = Yeast, 3 = Mold
@@ -48,13 +49,17 @@ class Strain(models.Model):
     safety_information = models.JSONField(blank=True, default=dict)
     sequence_information = models.JSONField(blank=True, default=dict)
 
+    visibility = models.CharField(max_length=20)
+    author_id = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="isolates")
+    author = models.CharField(max_length=150)
+
     def save(self, *args, **kwargs):
         if not self.type_id:
-            self.type_id = self.source.strains.count() + 1
+            self.type_id = self.source.isolates.count() + 1
         
         self.human_readable_id = '-'.join([self.source.human_readable_id, str(self.type_id).zfill(3)])
         self.accession_no = '-'.join([self.source.collection, self.source.institution, str((4 + self.type) * 10000 + self.type_id)])
-        super(Strain, self).save(*args, **kwargs)
+        super(Isolate, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.human_readable_id
