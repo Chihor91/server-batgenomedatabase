@@ -15,6 +15,7 @@ urlpatterns = [
     path('view/id/<int:pk>/', SourceViewSet.as_view({'get': 'retrieve'})),
     path('count/', SourceViewSet.as_view({'get': 'source_count'})),
     path('add/', SourceViewSet.as_view({'post': 'create'})),
+    path('delete/<int:pk>/', SourceViewSet.as_view({'delete': 'destroy'})),
 
     path('isolate/view/all/', IsolateViewSet.as_view({'get': 'list'})),
     path('isolate/view/id/<int:pk>/', IsolateViewSet.as_view({'get': 'retrieve'})),
