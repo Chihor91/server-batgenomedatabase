@@ -141,20 +141,29 @@ class IsolateViewSet(viewsets.ModelViewSet):
                 oxygen_tolerance = row['PHYSIOLOGY_OXYGEN_TOLERANCE']
                 if oxygen_tolerance.strip() != "": physiology_metabolism['oxygen_tolerance'] = oxygen_tolerance
 
+                cytochrome_oxidase = row['PHYSIOLOGY_CYTOCHROME_C_OXIDASE_PRESENCE']
+                if cytochrome_oxidase.strip() != "":
+                    if cytochrome_oxidase.strip() == "Oxidase-positive": physiology_metabolism['cytochrome_oxidase'] = True
+                    elif cytochrome_oxidase.strip() == "Oxidase-negative": physiology_metabolism['cytochrome_oxidase'] = False
+                    else: raise ValueError("Invalid cytochrome c oxidase presence value")
+
+                endospore_forming = row['PHYSIOLOGY_ENDOSPORE_FORMING_CAPABILITY']
+                if endospore_forming.strip() != "":
+                    if endospore_forming.strip() == "Endospore-forming": physiology_metabolism['endospore_forming'] = True
+                    elif endospore_forming.strip() == "Non-endospore-forming": physiology_metabolism['endospore_forming'] = False
+                    else: raise ValueError("Invalid endospore-forming-capability value")
+
+                antibiotic_resistance_profile = row['PHYSIOLOGY_ANTIBIOTIC_RESISTANCE_PROFILE']
+                if antibiotic_resistance_profile.strip() != "": physiology_metabolism['antibiotic_resistance_profile'] = antibiotic_resistance_profile
+
                 # SAFETY
                 safety_information = {}
                 
                 pathogenicity_human = row['SAFETY_PATHOGENICITY_HUMAN']
-                if pathogenicity_human.strip() != "":
-                    if pathogenicity_human.strip() == "yes": safety_information['pathogenicity_human'] = True
-                    elif pathogenicity_human.strip() == "no": safety_information['pathogenicity_human'] = False
-                    else: raise ValueError("Invalid pathogenicity human value.")
+                if pathogenicity_human.strip() != "": safety_information['pathogenicity_human'] = pathogenicity_human
 
                 pathogenicity_animal = row['SAFETY_PATHOGENICITY_ANIMAL']
-                if pathogenicity_animal.strip() != "":
-                    if pathogenicity_animal.strip() == "yes": safety_information['pathogenicity_animal'] = True
-                    elif pathogenicity_animal.strip() == "no": safety_information['pathogenicity_animal'] = False
-                    else: raise ValueError("Invalid pathogenicity animal value.")
+                if pathogenicity_animal.strip() != "": safety_information['pathogenicity_animal'] = pathogenicity_animal
 
                 biosafety_level = row['SAFETY_BIOSAFETY_LEVEL']
                 if biosafety_level.strip() != "":  safety_information['biosafety_level'] = biosafety_level
