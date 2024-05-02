@@ -101,8 +101,8 @@ class IsolateViewSet(viewsets.ModelViewSet):
                 
                 gram_stain = row['MORPH_GRAM_STAIN']
                 if gram_stain.strip() != "":
-                    if gram_stain.strip() == "positive": morphology['gram_stain'] = True
-                    elif gram_stain.strip() == "negative": morphology['gram_stain'] = False
+                    if gram_stain.strip() == "Gram-positive": morphology['gram_stain'] = True
+                    elif gram_stain.strip() == "Gram-negative": morphology['gram_stain'] = False
                     else: raise ValueError("Invalid gram stain value.")
 
                 cell_shape = row['MORPH_CELL_SHAPE']
