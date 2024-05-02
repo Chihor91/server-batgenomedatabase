@@ -20,13 +20,17 @@ class Source(models.Model):
     loc_site_abbr = models.CharField(max_length=25)
     loc_sampling_point = models.IntegerField(default=0)
 
+    raw_human_readable_id = models.CharField(max_length=150, blank=True)
     human_readable_id = models.CharField(max_length=150, blank=True)
 
     def save(self, *args, **kwargs):
         if (self.host_type == ""):
-            self.human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.loc_abbr, self.loc_site_abbr, str(self.loc_sampling_point), self.sample_type])
+
+            self.raw_human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.loc_abbr, self.loc_site_abbr, str(self.loc_sampling_point), self.sample_type])
+            self.human_readable_id = '-'.join([self.raw_human_readable_id, str(Source.objects.filter(raw_human_readable_id=self.raw_human_readable_id).count())])
         else: 
-            self.human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.loc_abbr, self.loc_site_abbr, str(self.loc_sampling_point), self.host_type, self.sample_type])
+            self.raw_human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.loc_abbr, self.loc_site_abbr, str(self.loc_sampling_point), self.host_type, self.sample_type])
+            self.human_readable_id = '-'.join([self.raw_human_readable_id, str(Source.objects.filter(raw_human_readable_id=self.raw_human_readable_id).count())])
         super(Source, self).save(*args, **kwargs)
 
     def __str__(self):
