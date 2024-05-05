@@ -4,13 +4,13 @@ from user.models import Account
 
 class Source(models.Model):
     collection = models.CharField(max_length=25)
-    institution = models.CharField(max_length=50)
+    institution = models.CharField(max_length=150)
     
     host_type = models.CharField(max_length=25, blank=True) 
     host_species = models.CharField(max_length=50, blank=True)
     sample_type = models.CharField(max_length=25)
 
-    project_name = models.CharField(max_length=50)
+    project_name = models.CharField(max_length=150)
     project_abbr = models.CharField(max_length=25)
 
 
