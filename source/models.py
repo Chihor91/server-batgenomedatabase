@@ -23,6 +23,9 @@ class Source(models.Model):
     raw_human_readable_id = models.CharField(max_length=150, blank=True)
     human_readable_id = models.CharField(max_length=150, blank=True)
 
+    author_id = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="sources")
+    author = models.CharField(max_length=150)
+
     def save(self, *args, **kwargs):
         if (self.host_type == ""):
 
