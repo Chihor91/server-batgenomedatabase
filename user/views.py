@@ -4,9 +4,10 @@ from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+
+from django.shortcuts import get_object_or_404
 
 class LoginViewSet(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -74,6 +75,23 @@ class AccountViewSet(viewsets.ModelViewSet):
             return Response(
                 {'error': 'Something went wrong while creating user.'},
                 status = status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    def destroy(self, request, pk=None, *args, **kwargs):
+        user = request.user
+        account = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = self.get_serializer(Account)
+
+        if (user.is_superuser):
+            response = super().destroy(request, *args, **kwargs)
+
+            Log.objects.create(type="Account", detail="Deleted account " + account.username, userid=request.user, user=request.user.username)
+
+            return response
+        else:
+            return Response(
+                {'error': 'Unauthorized'},
+                status=status.HTTP_401_UNAUTHORIZED
             )
 
 class LogViewSet(viewsets.ModelViewSet):
