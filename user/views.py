@@ -1,5 +1,5 @@
-from .models import Account
-from .serializers import AccountSerializer
+from .models import Account, Log
+from .serializers import AccountSerializer, LogSerializer
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -59,6 +59,7 @@ class AccountViewSet(viewsets.ModelViewSet):
                     )
                 else:
                     Account.objects.create_user(email = email, username = username, password = password)
+                    Log.objects.create(type="User", detail="Created account " + username, userid=request.user, user=request.user.username)
                     return Response(
                         {'data': 'Account created successfully'},
                         status = status.HTTP_201_CREATED
@@ -69,8 +70,23 @@ class AccountViewSet(viewsets.ModelViewSet):
                     status = status.HTTP_401_UNAUTHORIZED
                 )
         except Exception as e:
+            print(e)
             return Response(
                 {'error': 'Something went wrong while creating user.'},
                 status = status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+class LogViewSet(viewsets.ModelViewSet):
+    queryset = Log.objects.all()
+    serializer_class = LogSerializer
+
+    def list(self, request):
+        user = request.user
+        if user.is_superuser:
+            serializer = self.get_serializer(Log.objects.all(), many=True)
+            return Response(serializer.data)
+        else:
+            return Response(
+                {'error': 'Unauthorized'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )

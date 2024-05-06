@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from user.models import Log
 
 
 from django.shortcuts import get_object_or_404
@@ -30,8 +31,21 @@ class SourceViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         try:
-            return super().create(request, *args, **kwargs)
-        except:
+            if Account.objects.filter(id=request.user.id).exists():
+                request.data["author_id"] = request.user.id
+                request.data["author"] = request.user.username
+
+                response = super().create(request, *args, **kwargs)
+                Log.objects.create(type="Source", detail="Created source " + response.data["human_readable_id"], userid=request.user, user=request.user.username)
+                
+                return response
+            else:
+                return Response(
+                    {'error': 'Unauthorized'},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+        except Exception as e:
+            print(e)
             return Response(
                 {'message': 'An error has occurred while creating source.'},
                 status = status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -43,6 +57,23 @@ class SourceViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(source)
         
         return Response(serializer.data)
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        user = request.user
+        source = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = self.get_serializer(source)
+
+        if (user.is_superuser or user.id == serializer.data['author_id']):
+            response = super().destroy(request, *args, **kwargs)
+
+            Log.objects.create(type="Isolate", detail="Deleted source " + source.human_readable_id, userid=request.user, user=request.user.username)
+
+            return response
+        else:
+            return Response(
+                {'error': 'Unauthorized'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
     
     def source_count(self, request, *args, **kwargs):
         return Response(Source.objects.all().count())
@@ -58,7 +89,11 @@ class IsolateViewSet(viewsets.ModelViewSet):
             if Account.objects.filter(id=request.user.id).exists():
                 request.data["author_id"] = request.user.id
                 request.data["author"] = request.user.username
-                return super().create(request, *args, **kwargs)
+
+                response = super().create(request, *args, **kwargs)
+                Log.objects.create(type="Isolate", detail="Created isolate " + response.data['human_readable_id'], userid=request.user, user=request.user.username)
+
+                return response
             else:   return Response(
                 {'error': 'User not authenticated.'},
                 status = status.HTTP_401_UNAUTHORIZED
@@ -180,7 +215,9 @@ class IsolateViewSet(viewsets.ModelViewSet):
                                        taxonomy=taxonomy, morphology=morphology, 
                                        culture_growth=culture_growth, safety_information=safety_information, 
                                        visibility=visibility, author=author, author_id=author_id)
-                print(isolate.human_readable_id)
+                
+                Log.objects.create(type="Isolate", detail="Created isolate " + isolate.human_readable_id, userid=request.user, user=request.user.username)
+
                 results.append({'success': True, 'message': "Isolate successfully added."})
             except Source.DoesNotExist:
                 results.append({'success': False, 'message': "Source with specified human readable ID does not exist."})
@@ -245,7 +282,11 @@ class IsolateViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(isolate)
 
         if (user.is_superuser or user.id == serializer.data['author_id']):
-            return super().destroy(request, *args, **kwargs)
+            response = super().destroy(request, *args, **kwargs)
+
+            Log.objects.create(type="Isolate", detail="Deleted isolate " + isolate.human_readable_id, userid=request.user, user=request.user.username)
+
+            return response
         else:
             return Response(
                 {'error': 'Unauthorized'},

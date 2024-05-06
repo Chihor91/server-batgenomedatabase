@@ -43,3 +43,11 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+
+class Log(models.Model):
+    type = models.CharField(max_length=20)
+    detail = models.CharField(max_length=150)
+    datetime = models.DateTimeField(default=timezone.now)
+    userid = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="logs")
+    user = models.CharField(max_length=150)

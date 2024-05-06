@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from .models import Account
+from .models import (
+    Account,
+    Log
+)
 from datetime import datetime
 import re
 
@@ -14,3 +17,8 @@ class AccountSerializer(serializers.ModelSerializer):
             "password",
             "is_superuser"
         ]
+
+class LogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Log
+        fields = "__all__"
