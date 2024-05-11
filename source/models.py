@@ -3,8 +3,11 @@ from user.models import Account
 # Create your models here.
 
 class Source(models.Model):
+    collection_name = models.CharField(max_length=150)
     collection = models.CharField(max_length=25)
-    institution = models.CharField(max_length=150)
+
+    institution_name = models.CharField(max_length=150)
+    institution = models.CharField(max_length=25)
     
     host_type = models.CharField(max_length=25, blank=True) 
     host_species = models.CharField(max_length=50, blank=True)
@@ -42,6 +45,8 @@ class Source(models.Model):
 class Isolate(models.Model):
     source = models.ForeignKey(Source, related_name='isolates', on_delete=models.CASCADE)
     human_readable_id = models.CharField(max_length=150, blank=True)
+
+    raw_accession_no = models.CharField(max_length=100, blank=True)
     accession_no = models.CharField(max_length=100, blank=True)
     type = models.IntegerField()    # 1 - Bacteria, 2 = Yeast, 3 = Mold
     type_id = models.IntegerField(blank=True)
@@ -65,7 +70,7 @@ class Isolate(models.Model):
             self.type_id = self.source.isolates.count() + 1
         
         self.human_readable_id = '-'.join([self.source.human_readable_id, str(self.type_id).zfill(3)])
-        self.accession_no = '-'.join([self.source.collection, self.source.institution, str((4 + self.type) * 10000 + self.type_id)])
+        self.accession_no = '-'.join([self.source.collection, self.source.institution, str((4 + self.type) * 10000 + Isolate.objects.filter(raw_accession_no=self.raw_accession_no).count() + 1)])
         super(Isolate, self).save(*args, **kwargs)
 
     def __str__(self):
