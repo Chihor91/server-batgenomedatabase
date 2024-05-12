@@ -212,7 +212,7 @@ class IsolateViewSet(viewsets.ModelViewSet):
                 author_id = Account.objects.get(id=request.user.id)
 
                 isolate = Isolate.objects.create(source=source, type=type, 
-                                       taxonomy=taxonomy, morphology=morphology, 
+                                       taxonomy=taxonomy, morphology=morphology, physiology_metabolism=physiology_metabolism,
                                        culture_growth=culture_growth, safety_information=safety_information, 
                                        visibility=visibility, author=author, author_id=author_id)
                 
