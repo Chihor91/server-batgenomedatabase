@@ -3,17 +3,17 @@ from user.models import Account
 # Create your models here.
 
 class Source(models.Model):
-    collection_name = models.CharField(max_length=150)
+    collection_name = models.CharField(max_length=512)
     collection = models.CharField(max_length=25)
 
-    institution_name = models.CharField(max_length=150)
+    institution_name = models.CharField(max_length=512)
     institution = models.CharField(max_length=25)
     
     host_type = models.CharField(max_length=25, blank=True) 
     host_species = models.CharField(max_length=50, blank=True)
     sample_type = models.CharField(max_length=25)
 
-    project_name = models.CharField(max_length=150)
+    project_name = models.CharField(max_length=512)
     project_abbr = models.CharField(max_length=25)
 
 
