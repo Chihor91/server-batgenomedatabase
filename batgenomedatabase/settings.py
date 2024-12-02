@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+import os
+
+# LOAD ENVIRONMENT VARIABLES
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h5q&rk#u(hya=lwo9ipd!(gwwrdamaur=lx+-5bk9(*^@0^mmq'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.getenv('DEBUG') == 'true')
 
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
@@ -125,18 +131,16 @@ SIMPLE_JWT={
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-database = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'batgenome',
-        'HOST': '0.0.0.0',
-        'PORT': '3307',
-        'USER': 'root',
-        'PASSWORD': 'password'
-    }
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME': os.getenv('DB_NAME'),
+		'HOST': os.getenv('DB_HOST'),
+		'PORT': os.getenv('DB_PORT'),
+		'USER': os.getenv('DB_USER'),
+		'PASSWORD': os.getenv('DB_PASS')
+	}
 }
-
-DATABASES = database
 
 
 # Password validation

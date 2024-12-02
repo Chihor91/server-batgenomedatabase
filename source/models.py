@@ -16,12 +16,14 @@ class Source(models.Model):
     project_name = models.CharField(max_length=512)
     project_abbr = models.CharField(max_length=25)
 
-
-    loc_location = models.CharField(max_length=50)
+    loc_province = models.CharField(max_length=50)
+    loc_city = models.CharField(max_length=50)
     loc_abbr = models.CharField(max_length=25)
     loc_sampling_site = models.CharField(max_length=50)
     loc_site_abbr = models.CharField(max_length=25)
     loc_sampling_point = models.IntegerField(default=0)
+    loc_longitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
+    loc_latitude = models.DecimalField(max_digits=22, decimal_places=16, blank=True, null=True)
 
     raw_human_readable_id = models.CharField(max_length=150, blank=True)
     human_readable_id = models.CharField(max_length=150, blank=True)
@@ -31,7 +33,6 @@ class Source(models.Model):
 
     def save(self, *args, **kwargs):
         if (self.host_type == ""):
-
             self.raw_human_readable_id = '-'.join([self.collection, self.institution, self.project_abbr, self.loc_abbr, self.loc_site_abbr, str(self.loc_sampling_point), self.sample_type])
             self.human_readable_id = '-'.join([self.raw_human_readable_id, str(Source.objects.filter(raw_human_readable_id=self.raw_human_readable_id).count())])
         else: 
