@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'user',
     'source',
     'bacdiveapi',
+	'nicercaves',
 ]
 
 MIDDLEWARE = [
