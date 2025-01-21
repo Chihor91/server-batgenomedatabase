@@ -24,5 +24,6 @@ urlpatterns = [
     path('isolate/add/', IsolateViewSet.as_view({'post': 'create'})),
     path('isolate/add/file/', IsolateViewSet.as_view({'post': 'import_from_file'})),
     path('isolate/delete/<int:pk>/', IsolateViewSet.as_view({'delete': 'destroy'})),
+	path('isolate/visibility/<int:pk>/', IsolateViewSet.as_view({'put': 'update_visibility'}))
 
 ]
